@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Database Manipulation via sql</title>
+  </head>
+  <body>
+    <div>
+      <!-- Display all the data of customers  -->
+      SELECT * FROM Customer;
+    </div>
+
+    <div>
+      <!-- Display the product_name and category for products which their price is between 5000 and 10000 -->
+      SELECT product_name, category FROM Product WHERE Price BETWEEN 5000 AND
+      10000;
+    </div>
+
+    <div>
+      <!-- Display all the data of products sorted in descending order of price -->
+
+      SELECT * FROM Product ORDER BY Price DESC;
+    </div>
+
+    <div>
+      <!-- Display the total number of orders, the average amount, the highest total amount and the lowest total amount -->
+
+      SELECT COUNT(*) AS total_orders, AVG(total_amount) AS average_amount,
+      MAX(total_amount) AS highest_amount, MIN(total_amount) AS lowest_amount
+      FROM Orders;
+    </div>
+
+    <div>
+      <!-- For each product_id, display the number of orders -->
+
+      SELECT Product_id, COUNT(*) AS number_of_orders FROM Orders GROUP BY
+      Product_id;
+    </div>
+
+    <div>
+      <!-- Display the customer_id which has more than 2 orders -->
+      SELECT Customer_id FROM Orders GROUP BY Customer_id HAVING COUNT(*) > 2;
+    </div>
+
+    <div>
+      <!-- For each month of the 2020 year, display the number of orders -->
+
+      SELECT TO_CHAR(OrderDate, 'YYYY-MM') AS month, COUNT(*) AS
+      number_of_orders FROM Orders WHERE TO_CHAR(OrderDate, 'YYYY') = '2020'
+      GROUP BY TO_CHAR(OrderDate, 'YYYY-MM') ORDER BY month;
+    </div>
+
+    <div>
+      <!-- For each order, display the product_name, the customer_name and the date of the order -->
+
+      SELECT o.OrderDate, p.product_name, c.Customer_Name FROM Orders o JOIN
+      Product p ON o.Product_id = p.Product_id JOIN Customer c ON o.Customer_id
+      = c.Customer_id;
+    </div>
+
+    <div>
+      <!-- Display all the orders made three months ago -->
+
+      SELECT * FROM Orders WHERE OrderDate >= ADD_MONTHS(SYSDATE, -3) AND
+      OrderDate < ADD_MONTHS(SYSDATE, -2);
+    </div>
+
+    <div>
+      <!-- Display customers (customer_id) who have never ordered a product -->
+
+      SELECT Customer_id FROM Customer WHERE Customer_id NOT IN (SELECT DISTINCT
+      Customer_id FROM Orders);
+    </div>
+  </body>
+</html>
